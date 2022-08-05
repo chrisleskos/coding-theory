@@ -1,6 +1,5 @@
 from lz77 import LZ77Compression
-import codification
-import socket           
+import codification      
 import requests
 
 # prev_compressed=""
