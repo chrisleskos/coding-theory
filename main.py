@@ -1,6 +1,7 @@
 from lz77 import LZ77Compression
 import codification
-
+import socket           
+import requests
 
 # prev_compressed=""
 # while True:
@@ -34,10 +35,10 @@ while int(error_index) >= 0 and int(error_index) < len(data):
 
 data = data[:int(error_index)] + str((int(data[int(error_index)]) - 1)**2) + data[int(error_index)+1:] # if 0: (0-1)^2 = 1, if 1: (1-1)^2 = 0
 # 5. Encode data base64
-encoded_message = codification.b64Encode(data)
+# encoded_message = codification.b64Encode(data)
 # 6. Send json to host
 json_data = {
-    "encoded_message": encoded_message,
+    "encoded_message": data,
     "noise": 2,
     "compression_algorithm": "lz77",
     "encoding": "cyclic",
@@ -45,7 +46,16 @@ json_data = {
     "errors": 1
 }
 
-print(json_data)
+s = socket.socket() # Create a socket object
+ 
+port = '5000'
+host = '127.0.0.1'
+url = "http://" + host + ":" + port
+
+res = requests.post(url, json = json_data)
+
+print(res.text)
+ 
 # 7. Server decodes the message base64
 # 8. Check for errors
 # 9. Error correction

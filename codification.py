@@ -1,10 +1,9 @@
-import socket           
 import base64
 import binascii
 
 
 def xor(a, b):
- 
+
     # initialize result
     result = []
  
@@ -90,14 +89,7 @@ def b64Encode(data, enc_format='bin'):
     return binascii.a2b_base64(data)
     # return base64.b64encode(data.encode(enc_format)) 
 
-# Create a socket object
-# s = socket.socket()       
- 
-# Define the port on which you want to connect
-# port = 12345           
- 
-# connect to the server on local computer
-# s.connect(('127.0.0.1', port))
+
  
 # input_string = input("Enter data you want to send->")
 # data =(''.join(format(ord(x), 'b') for x in input_string))####################
