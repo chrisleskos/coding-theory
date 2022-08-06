@@ -85,9 +85,13 @@ def decodeData(data, key):
 
 	return remainder
 
-def b64Encode(data, enc_format='bin'):
+def b64Encode(data):
+    return binascii.b2a_base64(data.encode())
+    # return base64.b64encode(data.encode(enc_format))
+
+def b64Decode(data):
     return binascii.a2b_base64(data)
-    # return base64.b64encode(data.encode(enc_format)) 
+
 
 
  
