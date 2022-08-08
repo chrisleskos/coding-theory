@@ -1,7 +1,6 @@
 from lz77 import LZ77Compression
 import codification      
 import requests
-from PIL import Image
 import random
 
 # 1. Choose file 
