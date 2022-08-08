@@ -2,7 +2,7 @@ from lz77 import LZ77Compression
 import codification      
 import requests
 from PIL import Image
-
+import random
 
 # 1. Choose file 
 file_path = input("Input file path\n")
@@ -15,12 +15,21 @@ compressed_file = lz.compress(file_path)
 key = "1101"
 data = codification.encodeData(compressed_file, key) 
 
-# 4. Add error
-error_index = -1
-while int(error_index) < 0 or int(error_index) >= len(data):
-    error_index = input("Choose an index from 0-" + str(len(data) - 1) + ": ")
+# 4. Add noise
+noise = -1
+while int(noise) < 0 or int(noise) >= 100:
+    noise = input("Give noise percentage%: ")
 
-data = data[:int(error_index)] + str((int(data[int(error_index)]) - 1)**2) + data[int(error_index)+1:] # if 0: (0-1)^2 = 1, if 1: (1-1)^2 = 0
+errors = int(noise)*len(data)//100
+
+visited_indexes = []
+for i in range(errors):
+    bit_index = random.randrange(len(data))
+    while bit_index in visited_indexes:
+        bit_index = random.randrange(len(data))
+    
+    visited_indexes.append(bit_index)
+    data = data[:bit_index] + str( (int(data[bit_index])-1)**2 ) + data[bit_index+1:] # if data[bit_index] =0 -> (0-1)^2 = 1, =1 -> (1-1)^2 = 0
 
 # 5. Encode data base64
 encoded_message = codification.b64Encode(data)
@@ -28,11 +37,11 @@ encoded_message = codification.b64Encode(data)
 # 6. Send json to host
 json_data = {
     "encoded_message": encoded_message.decode(),
-    "noise": 2,
+    "noise": noise,
     "compression_algorithm": "lz77",
     "encoding": "cyclic",
     "parameters": ["param_list"],
-    "errors": 1
+    "errors": errors
 }
  
 port = '5000'

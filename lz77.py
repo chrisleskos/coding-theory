@@ -5,7 +5,6 @@ class LZ77Compression:
     def __init__(self):
         self.sb_size = 255
         self.la_size = 10
-        self.counter = 0
 
 
     def compress(self, file_path):
@@ -16,8 +15,6 @@ class LZ77Compression:
         except IOError: 
             print("File not found")
             raise
-
-        # print(data)
 
         token_array = self.lz77(data=data)
         return self.binary_representation(token_array)
@@ -50,7 +47,6 @@ class LZ77Compression:
 
         while True:
             exit_recursion = True
-            self.counter += 1
             end_index = min(len(data), start_index + self.la_size)
 
             look_ahead_buffer = data[start_index : end_index]
